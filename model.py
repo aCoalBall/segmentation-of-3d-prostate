@@ -15,7 +15,8 @@ class Decoder(nn.Module):
     self.up = nn.ConvTranspose3d(in_channels, out_channels, kernel_size=2, stride=2)
     self.conv_relu = nn.Sequential(
         nn.Conv3d(middle_channels, out_channels, kernel_size=3, padding=1),
-        nn.ReLU()
+        nn.ReLU(),
+        nn.BatchNorm3d(out_channels)
         )
   def forward(self, x1, x2):
     x1 = self.up(x1)
@@ -44,29 +45,33 @@ class UNet3D(nn.Module):
             nn.Conv3d(4, 16, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Conv3d(16, 16, kernel_size=3, stride=1, padding=1),
-            nn.MaxPool3d(kernel_size=2))
+            nn.MaxPool3d(kernel_size=2),
+            nn.ReLU(),
+            nn.BatchNorm3d(16))
 
         self.layer2 = nn.Sequential(
             nn.Conv3d(16, 32, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
-            nn.Conv3d(32, 32, kernel_size=3, stride=1, padding=1),
-            nn.ReLU(),
             nn.Conv3d(32, 64, kernel_size=3, stride=1, padding=1),
-            nn.MaxPool3d(kernel_size=2))
+            nn.MaxPool3d(kernel_size=2),
+            nn.ReLU(),
+            nn.BatchNorm3d(64))
         
         self.layer3 = nn.Sequential(
             nn.Conv3d(64, 64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Conv3d(64, 64, kernel_size=3, stride=1, padding=1),
+            nn.MaxPool3d(kernel_size=2),
             nn.ReLU(),
-            nn.Conv3d(64, 64, kernel_size=3, stride=1, padding=1),
-            nn.MaxPool3d(kernel_size=2))
+            nn.BatchNorm3d(64))
         
         self.layer4 = nn.Sequential(
             nn.Conv3d(64, 64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Conv3d(64, 128, kernel_size=3, stride=1, padding=1),
-            nn.MaxPool3d(kernel_size=2))
+            nn.MaxPool3d(kernel_size=2),
+            nn.ReLU(),
+            nn.BatchNorm3d(128))
 
 
         self.decode3 = Decoder(128, 64+64, 64)

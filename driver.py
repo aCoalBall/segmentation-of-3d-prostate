@@ -73,10 +73,8 @@ class NiiImageLoader(DataLoader) :
         #retrieve path from dataset
         for f in sorted(glob.iglob(image_path)): 
             self.inputs.append(f)
-
         for f in sorted(glob.iglob(mask_path)):
             self.masks.append(f)
-
         self.totensor = transforms.ToTensor()
 
     def __len__(self):
@@ -93,7 +91,6 @@ class NiiImageLoader(DataLoader) :
         mask = nib.load(mask_p)
         mask = np.asarray(mask.dataobj)
         
-        #Resize the images
         image = self.totensor(image)
         image = image.unsqueeze(0)
         image = image.data
@@ -112,25 +109,20 @@ class Augment:
         self.flip1 = tio.transforms.RandomFlip(1, flip_probability = 1)
         self.flip2 = tio.transforms.RandomFlip(2, flip_probability = 1)
 
-        nothing = tio.transforms.RandomFlip(2, flip_probability = 0)
+        nothing = tio.transforms.RandomFlip(0, flip_probability = 0)
         bias_field = tio.transforms.RandomBiasField()
         blur = tio.transforms.RandomBlur()
         spike = tio.transforms.RandomSpike()
-        self.oneof = tio.transforms.OneOf([nothing, bias_field, blur, spike]) #randomly choose one augment method from the three 
+        prob = {}
+        prob[nothing] = 0.7
+        prob[bias_field] = 0.1
+        prob[blur] = 0.1
+        prob[spike] = 0.1
+        self.oneof = tio.transforms.OneOf(prob) #randomly choose one augment method from the three 
 
     def crop_and_augment(self, image, mask):
-
-        seed = random.randint(0,2)
-        if seed == 0:
-            image = self.flip0(image)
-            mask = self.flip0(mask)
-        elif seed == 1:
-            image = self.flip1(image)
-            mask = self.flip1(mask)
-        elif seed == 2:
-            image = self.flip2(image)
-            mask = self.flip2(mask)
-
+        image = self.shrink(image)
+        mask = self.shrink(mask)
         image = self.oneof(image)
         
         return image, mask
