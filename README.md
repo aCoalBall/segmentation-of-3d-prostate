@@ -1,7 +1,5 @@
 Image Segmentation for prostate dataset using UNet-3D
 ======
- Dawei Shen 
- 45979189
  
  ## UNet-3D
  
