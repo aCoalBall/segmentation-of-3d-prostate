@@ -38,32 +38,34 @@ Image Segmentation for prostate dataset using UNet-3D
  
   Prostate 3D data set is randomly split into 3 sets as the training set, the validation set, and the test set. The training set contains 179 samples. Both the validation set and the test set have 16 samples.
  
-  Most of the 3D images in the given dataset contains (128 x 256 x 256) voxels, which is overly large for any available computing resources for the author. Therefore, when loading the dataset, all images are resized to (64 x 128 x 128), which significantly reduces the computing complexity.
-  
-  As a data augmentation trick, the flip operation is randomly applied for loaded data in order to enlarge the size of the dataset.
+  As a data augmentation trick, the blur, spike and bias_field operations are randomly applied for loaded data in order to enlarge the size of the dataset.
  
   For training the model, an unweighted cross entropy loss function is used as the loss function. The optimizer uses Adam algorithm. The batch size is set to be 1.
   
  ## Experiment Result
   
-  The experiment took 8 epochs and average Dice Similarity Coefficient of all 6 labels reached over 0.45. label 0 and label 1 reached over 0.9, label 2 and 3 reached over 0.7, while the proportion of label 4 and label 5 in the dataset are extremely small thus this unet 3d model can not identify them properly yet. 
+  The experiment took 35 epochs and average Dice Similarity Coefficient of all 6 labels reached over 0.9. 
   
-  ![image](https://github.com/aCoalBall/PatternFlow/blob/topic-recognition/recognition/45979189unet3d/Figure_1.png)
+  ![image](https://github.com/aCoalBall/segmentation-of-3d-prostate/blob/main/performance.png)
   
   
   
   The following figure is a result on Case_004_Week0_LFOV.nii.gz.
   
-  ![image](https://github.com/aCoalBall/PatternFlow/blob/topic-recognition/recognition/45979189unet3d/visualization/axial.png)
-  ![image](https://github.com/aCoalBall/PatternFlow/blob/topic-recognition/recognition/45979189unet3d/visualization/coronal.png)
-  ![image](https://github.com/aCoalBall/PatternFlow/blob/topic-recognition/recognition/45979189unet3d/visualization/sagittal.png)
+  ![image](https://github.com/aCoalBall/segmentation-of-3d-prostate/blob/main/visualization/axial.png)
+  ![image](https://github.com/aCoalBall/segmentation-of-3d-prostate/blob/main/visualization/coronal.png)
+  ![image](https://github.com/aCoalBall/segmentation-of-3d-prostate/blob/main/visualization/sagittal.png)
   
   
   ## Reference
   
-  [U+FFFD] Çiçek, A. Abdulkadir, S. S. Lienkamp, T. Brox, and O. Ronneberger, “3D U-Net: Learning Dense
-Volumetric Segmentation from Sparse Annotation,” in Medical Image Computing and Computer-Assisted Intervention – MICCAI 2016, ser. Lecture Notes in Computer Science, S. Ourselin, L. Joskowicz, M. R. Sabuncu,
+Çiçek, A. Abdulkadir, S. S. Lienkamp, T. Brox, and O. Ronneberger, “3D U-Net: Learning Dense
+Volumetric Segmentation from Sparse Annotation,” in Medical Image Computing and Computer-Assisted Intervention – MICCAI 2016, ser. Lecture Notes in Computer Science, S. Ourselin, L. Joskowicz, M. R. Sabuncu,
 G. Unal, and W. Wells, Eds. Cham: Springer International Publishing, 2016, pp. 424–432.
+
+Paul A. Yushkevich, Joseph Piven, Heather Cody Hazlett, Rachel Gimpel Smith, Sean Ho, James C. Gee, and Guido Gerig. User-guided 3D active contour segmentation of anatomical structures: Significantly improved efficiency and reliability. Neuroimage. 2006 Jul 1; 31(3):1116-28. 
+[bibtex] [medline] [doi:10.1016/j.neuroimage.2006.01.015]
+
 
 
   
