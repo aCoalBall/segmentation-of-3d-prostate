@@ -18,7 +18,7 @@ Image Segmentation for prostate dataset using UNet-3D
  
  The program is implemented in Pytorch.
  
- Prostate 3D dataset needs to be downloaded to this folder. It also needs to be extracted and renamed as v1. (see the input path in line 164 in driver.py)
+ Prostate 3D dataset needs to be downloaded to this folder. see v1 folder. 
  
  Some other python packages that are required for running are listed below.
  
